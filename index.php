@@ -11,13 +11,11 @@
 <body>
 
 <?php
-include "config/database.php";
-include "Model/Task.php";
+    include "config/database.php";
+    include "Model/Task.php";
 
-
-$taskModel = new Task($connection);
-$tasks = $taskModel->getAllTasks();
-
+    $taskModel = new Task($connection);
+    $tasks     = $taskModel->getAllTasks();
 
 ?>
 <div class="container">
@@ -59,20 +57,38 @@ $tasks = $taskModel->getAllTasks();
                     <td><?php echo $row["due_date"] ?></td>
                     <td>
                         <a class="action-btn edit-btn" ><i class="fas fa-edit"></i></a>
-                        <a class="action-btn delete-btn" href="controller/taskController.php?delete_task=<?php echo $row['id']?>"><i class="fas fa-trash"></i></a>
-                       <?php if($row["status"]==0):?>
-                        <a class="action-btn delete-btn" href="controller/taskController.php?complete_task=<?php echo $row['id']?>"><i class="fas fa-check-circle"></i></a>
-                        <?php endif ?>
-                    <td><?php echo $row["status"]==0?"Pending":"Complete" ?></td>
+                        <a class="action-btn delete-btn" href="controller/taskController.php?delete_task=<?php echo $row['id'] ?>"><i class="fas fa-trash"></i></a>
+                       <?php if ($row["status"] == 0): ?>
+                        <a class="action-btn delete-btn" href="controller/taskController.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check-circle"></i></a>
+                        <?php endif?>
+                    <td><?php echo $row["status"] == 0 ? "Pending" : "Complete" ?></td>
                 </tr>
-                
-           
+
+
         <?php endwhile; ?>
                 </tr>
-             
+
             </tbody>
         </table>
     </div>
+
+    <div id="editModal" class="modal">
+    <div class="modal-content">
+        <form action="" id ="editTaskForm">
+        <span class="close">&times;</span>
+        <h2>Edit Task</h2>
+        <input type="hidden" name="id" id="editTaskId">
+<input type="text" name="title" id="editTaskTitle" placeholder="Title">
+<textarea name="description" id="editTaskDescription" placeholder="Description"></textarea>
+<input type="date" name="" id="editTaskDueDate">
+<button type="submit">Update Task</button>
+        </form>
+    </div>
+</div>
+
+
+
+
 </div>
 
 </body>
