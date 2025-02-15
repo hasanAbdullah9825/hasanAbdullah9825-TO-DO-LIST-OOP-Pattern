@@ -56,10 +56,16 @@
                     <td><?php echo $row["description"] ?></td>
                     <td><?php echo $row["due_date"] ?></td>
                     <td>
-                        <a class="action-btn edit-btn" ><i class="fas fa-edit"></i></a>
-                        <a class="action-btn delete-btn" href="controller/taskController.php?delete_task=<?php echo $row['id'] ?>"><i class="fas fa-trash"></i></a>
+                        <a class="action-btn edit-btn"
+                        data-id="<?php echo $row["id"]?>"
+                        data-title="<?php echo $row["title"]?>"
+                        data-description="<?php echo $row["description"]?>"
+                        data-duedate="<?php echo $row["due_date"]?>"
+                        
+                        ><i class="fas fa-edit"></i></a>
+                        <a class="action-btn delete-btn" href="/controller/taskController.php?delete_task=<?php echo $row['id'] ?>"><i class="fas fa-trash"></i></a>
                        <?php if ($row["status"] == 0): ?>
-                        <a class="action-btn delete-btn" href="controller/taskController.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check-circle"></i></a>
+                        <a class="action-btn delete-btn" href="/controller/taskController.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check-circle"></i></a>
                         <?php endif?>
                     <td><?php echo $row["status"] == 0 ? "Pending" : "Complete" ?></td>
                 </tr>
@@ -75,12 +81,12 @@
     <div id="editModal" class="modal">
     <div class="modal-content">
         <form action="" id ="editTaskForm">
-        <span class="close">&times;</span>
+        <span class="close"  id="close-btn" >&times;</span>
         <h2>Edit Task</h2>
         <input type="hidden" name="id" id="editTaskId">
 <input type="text" name="title" id="editTaskTitle" placeholder="Title">
 <textarea name="description" id="editTaskDescription" placeholder="Description"></textarea>
-<input type="date" name="" id="editTaskDueDate">
+<input type="date" name="editTaskDueDate" id="editTaskDueDate">
 <button type="submit">Update Task</button>
         </form>
     </div>
@@ -90,6 +96,6 @@
 
 
 </div>
-
+<script src="/assets/script.js"></script>
 </body>
 </html>

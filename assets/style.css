@@ -90,6 +90,7 @@ background-color: rgb(0,0,0,0.5);
 display: flex;
 justify-content: center;
 align-items: center;
+display: none;
   
 }
 
