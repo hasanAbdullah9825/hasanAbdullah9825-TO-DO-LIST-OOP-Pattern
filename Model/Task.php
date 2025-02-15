@@ -49,7 +49,7 @@ public function deleteTask($id){
 
 }
 
-function completeTask($id){
+public function completeTask($id){
    
     $query ="UPDATE tasks SET status ='1' where id =?";
     $stmt = $this->connection->prepare($query);
@@ -57,6 +57,16 @@ function completeTask($id){
         return false;
     }
     $stmt->bind_param("i",$id);
+    return $stmt->execute();
+}
+
+public function updateTask($id, $title, $description, $due_date){
+    $query ="UPDATE tasks SET title=?, description=?, due_date=? where id =?";
+    $stmt = $this->connection->prepare($query);
+    if ($stmt === false) {
+        return false;
+    }
+    $stmt->bind_param("sssi", $title, $description, $due_date, $id);
     return $stmt->execute();
 }
 }

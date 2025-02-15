@@ -5,6 +5,9 @@ include "../Model/Task.php";
 
 $taskModel = new Task($connection);
 
+
+
+
 if(isset($_POST["add_task"])){
 
     $title =$_POST["title"];
@@ -35,3 +38,19 @@ if(isset($_GET["complete_task"])){
         return header("Location:../index.php");
     }
 }
+if(isset($_POST["edit-form"])){
+
+    $id = $_POST['id'];
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $due_date = $_POST['due_date'];
+
+    if ($taskModel->updateTask($id, $title, $description, $due_date)) {
+        echo "Task Updated Successfully";
+    } else {
+        echo "Error Updating Task";
+    }
+    exit;
+    
+}
+

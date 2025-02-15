@@ -35,3 +35,21 @@ window.addEventListener("click", (event) => {
     editTaskModal.style.display = "none";
   }
 });
+
+
+document.getElementById("editTaskForm").addEventListener("submit", (event) => {
+
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    console.log([...formData.entries()]); // Debugging step
+    fetch("controller/taskController.php", {
+
+        method:"POST",
+        body:formData
+
+    }).then(response =>response.text()).then(data => {
+        console.log(data);
+        location.reload();
+
+});
+});

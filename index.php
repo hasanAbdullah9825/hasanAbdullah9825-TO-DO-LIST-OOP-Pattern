@@ -65,7 +65,7 @@
                         ><i class="fas fa-edit"></i></a>
                         <a class="action-btn delete-btn" href="/controller/taskController.php?delete_task=<?php echo $row['id'] ?>"><i class="fas fa-trash"></i></a>
                        <?php if ($row["status"] == 0): ?>
-                        <a class="action-btn delete-btn" href="/controller/taskController.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check-circle"></i></a>
+                        <a class="action-btn " href="/controller/taskController.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check-circle"></i></a>
                         <?php endif?>
                     <td><?php echo $row["status"] == 0 ? "Pending" : "Complete" ?></td>
                 </tr>
@@ -83,11 +83,12 @@
         <form action="" id ="editTaskForm">
         <span class="close"  id="close-btn" >&times;</span>
         <h2>Edit Task</h2>
-        <input type="hidden" name="id" id="editTaskId">
+        <input type="hidden" name="id" id="editTaskId" >
+        <input type="hidden" name="edit-form" value="1">
 <input type="text" name="title" id="editTaskTitle" placeholder="Title">
 <textarea name="description" id="editTaskDescription" placeholder="Description"></textarea>
-<input type="date" name="editTaskDueDate" id="editTaskDueDate">
-<button type="submit">Update Task</button>
+<input type="date" name="due_date" id="editTaskDueDate">
+<button type="submit" name ="edit-btn">Update Task</button>
         </form>
     </div>
 </div>
