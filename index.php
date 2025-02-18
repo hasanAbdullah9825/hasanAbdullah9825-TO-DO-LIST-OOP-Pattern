@@ -16,13 +16,18 @@
 
     $taskModel = new Task($connection);
     $tasks     = $taskModel->getAllTasks();
+    session_start();
+    if(!isset($_SESSION['csrf_token'])){
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
 
 ?>
 <div class="container">
     <div class="add_task_container">
         <h2>Add Task Form</h2>
         <form method="POST" action="controller/taskController.php" >
-            <label for="title">Title:</label>
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">    
+        <label for="title">Title:</label>
             <input type="text" id="title" name="title" required>
 
             <label for="description">Description:</label>
@@ -54,18 +59,51 @@
 
                 <td><?php echo $row["title"] ?></td>
                     <td><?php echo $row["description"] ?></td>
-                    <td><?php echo $row["due_date"] ?></td>
+                    <td><?php 
+                    $date = new DateTime($row["due_date"]);
+                    echo $date->format('j M y') ;
+                    
+                    
+                     ?></td>
                     <td>
                         <a class="action-btn edit-btn"
                         data-id="<?php echo $row["id"]?>"
                         data-title="<?php echo $row["title"]?>"
                         data-description="<?php echo $row["description"]?>"
-                        data-duedate="<?php echo $row["due_date"]?>"
+                        data-duedate="<?php 
                         
-                        ><i class="fas fa-edit"></i></a>
-                        <a class="action-btn delete-btn" href="/controller/taskController.php?delete_task=<?php echo $row['id'] ?>"><i class="fas fa-trash"></i></a>
+                        echo $row["due_date"]?>"
+                        
+                        ><i class="fas fa-edit"></i>
+                    </a>
+<!-- <a class="action-btn delete-btn" href="/controller/taskController.php?delete_task=<?php echo $row['id'] ?>"><i class="fas fa-trash"></i>
+</a> -->
+<form method="POST" action="/controller/taskController.php" style="display:inline;">
+    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+    <input type="hidden" name="delete_task" value="<?php echo $row['id']; ?>">
+    <button type="submit" class="action-btn delete-btn">
+        <i class="fas fa-trash"></i>
+    </button>
+</form>
+
                        <?php if ($row["status"] == 0): ?>
-                        <a class="action-btn " href="/controller/taskController.php?complete_task=<?php echo $row['id'] ?>"><i class="fas fa-check-circle"></i></a>
+
+<!-- 
+ <a class="action-btn " href="/controller/taskController.php?complete_task=<?php echo $row['id'] ?>">
+    
+ <i class="fas fa-check-circle"></i>
+
+</a> -->
+
+<form method="POST" action="/controller/taskController.php" style="display:inline;">
+    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+    <input type="hidden" name="complete_task" value="<?php echo $row['id']; ?>">
+    <button type="submit" class="action-btn delete-btn">
+    <i class="fas fa-check-circle"></i>
+    </button>
+</form>
+                        
+                        
                         <?php endif?>
                     <td><?php echo $row["status"] == 0 ? "Pending" : "Complete" ?></td>
                 </tr>
@@ -81,6 +119,7 @@
     <div id="editModal" class="modal">
     <div class="modal-content">
         <form action="" id ="editTaskForm">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <span class="close"  id="close-btn" >&times;</span>
         <h2>Edit Task</h2>
         <input type="hidden" name="id" id="editTaskId" >

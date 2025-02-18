@@ -57,6 +57,7 @@ public function completeTask($id){
         return false;
     }
     $stmt->bind_param("i",$id);
+    
     return $stmt->execute();
 }
 
