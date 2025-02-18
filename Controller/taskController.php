@@ -5,6 +5,10 @@ include "../Model/Task.php";
 
 session_start();
 $taskModel = new Task($connection);
+
+if (! isset($_POST['csrf_token']) || ! isset($_SESSION['csrf_token']) || $_SESSION['csrf_token'] != $_POST['csrf_token']) {
+    throw new Exception("Invalid CSRF token");
+}
 function cleanInput($data)
 {
 
@@ -12,11 +16,7 @@ function cleanInput($data)
 }
 
 try{
-    // die("Database connection failed");
 
-    if (! isset($_POST['csrf_token']) || ! isset($_SESSION['csrf_token']) || $_SESSION['csrf_token'] != $_POST['csrf_token']) {
-        throw new Exception("Invalid CSRF token");
-    }
 //add new task
 if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['add_task'])){
     //validation
@@ -70,39 +70,25 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['complete_task'])){
     }
 }
 
-//edit task
-// die("Error Processing Request");
-// if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['edit-form'])){
-// die("Error Processing Request");
-//     $id = cleanInput($_POST['id']);
-//     $title = cleanInput($_POST['title']);
+// edit task
+
+if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['edit-form'])){
+
+    $id = cleanInput($_POST['id']);
+    $title = cleanInput($_POST['title']);
   
-//     $description = cleanInput($_POST['description']);
-//     $due_date = cleanInput($_POST['due_date']);
-
-//     if ($taskModel->updateTask($id, $title, $description, $due_date)) {
-//         header("Location:../index.php");
-//         exit();
-//     } else {
-//         throw new Exception("Failed to update task");
-//     }
-//  }
-
-if (isset($_POST["edit-form"])) {
-
-    $id          = $_POST['id'];
-    $title       = $_POST['title'];
-    $description = $_POST['description'];
-    $due_date    = $_POST['due_date'];
+    $description = cleanInput($_POST['description']);
+    $due_date = cleanInput($_POST['due_date']);
 
     if ($taskModel->updateTask($id, $title, $description, $due_date)) {
-        echo "Task Updated Successfully";
+        header("Location:../index.php");
+        exit();
     } else {
-        echo "Error Updating Task";
+        throw new Exception("Failed to update task");
     }
-    exit;
+ }
 
-}
+
 
 }
 
