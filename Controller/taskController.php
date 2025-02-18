@@ -30,9 +30,10 @@ class TaskController
     {
 
         try {
-            $this->checkCsrfToken();
+           
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $this->checkCsrfToken();
                 if (isset($_POST["add_task"])) {
                     $this->addTask();
                 } elseif (isset($_POST['delete_task'])) {
